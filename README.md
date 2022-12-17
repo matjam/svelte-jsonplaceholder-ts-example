@@ -36,3 +36,7 @@ Anyway, hope this helps.
 ## Halp
 
 I'm sure you are better at svelte, typescript, javascript, than I am. File a PR, I'll merge it. I was looking at implementing a TypeScript version of the [Realworld](https://github.com/gothinkster/realworld) app (the official [Svelte Realworld](https://github.com/sveltejs/realworld) app is in Javascript) but then realised it would take a lot of time so I decided against that. I can see why they didn't do it yet.
+
+## TODO
+
+I wouldn't mind finishing this, having it do all the things.
