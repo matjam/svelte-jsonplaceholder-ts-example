@@ -53,7 +53,7 @@ export type User = {
         street: string;
         suite: string;
         city: string;
-        zipclode: string;
+        zipcode: string;
         geo: {
             lat: number;
             lng: number;

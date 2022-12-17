@@ -1,19 +1,21 @@
 import type { PageLoad } from './$types';
-import { getPosts, getUsers } from "$lib/jsonPlaceholderClient";
-import type { Post, User } from '$lib/jsonPlaceholderTypes';
+import { GET } from "$lib/jsonPlaceholderClient";
+import type { Post, Posts, User, Users } from '$lib/jsonPlaceholderTypes';
 
 type PostWithUsername = {
     username: string | undefined
 } & Post;
 
-// Example of using two different APIs to do some client side logic
+// Example of using two different APIs to do some client side logic. We do this because
+// we want to display the user's name in the post, not just their ID. This ordinarily
+// would be done on the back-end but we're doing it here because it's fun.
 export const load = (async ({ fetch }) => {
     // call multple APIs at the same time async, and wait for them all.
-    const [postsResult, usersResult] = await Promise.all([getPosts(fetch), getUsers(fetch)]);
+    const [postsResult, usersResult] = await Promise.all([GET<Posts>(fetch, "posts"), GET<Users>(fetch, "users")]);
 
     // construct a map of all the userID->User objects
     let userMap = new Map<number, User>();
-    for (let user of usersResult.users) {
+    for (let user of usersResult) {
         userMap.set(user.id, user)
     }
 
@@ -25,7 +27,7 @@ export const load = (async ({ fetch }) => {
     // instead of Post and the type checking in my IDE helpfully pointed it out
     // to me. I'm used to this kind of thing from the Go world. It's a massive
     // timesaver.
-    for (let post of postsResult.posts) {
+    for (let post of postsResult) {
         result.push({
             id: post.id,
             userId: post.userId,
@@ -35,5 +37,5 @@ export const load = (async ({ fetch }) => {
         })
     }
 
-    return { data: result };
+    return { posts: result };
 }) satisfies PageLoad;
